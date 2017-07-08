@@ -5,7 +5,8 @@
 0. Find the `line 10` to change the file path
 1. Find the `line 82-88`
 2. Choose the function by add/delete the `#`
-3. Run the code
+3. If you need to test the DNN, delete the `#` at `line 7-8`. Read Keras model is very slow so I commented them
+4. Run the code
 
 # Score:
 - GMM+SVC: 
