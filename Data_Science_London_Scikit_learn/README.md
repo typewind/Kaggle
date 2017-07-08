@@ -9,7 +9,7 @@
 
 # Score:
 - GMM+SVC: 
-- Simple SVC:93.443
+- Simple SVC: 0.93443 (n_components=12)
 - DNN:0.85544
 
 # Analysis
@@ -17,6 +17,5 @@ Please read my corresponding blog: [Notes of Data Science London + Scikit-learn]
 
 # Reference
 1. [Tutorials - Data Science London + Scikit-learn](https://www.kaggle.com/c/data-science-london-scikit-learn/visualization/1091) by William Cukierski. Very good introduction of common functions (PCA, SVM, cross-validation, etc., in sklearn). I love this cheat sheet from it. Just Perfect. I should print it out or set it as a desktop XD.
-![Without route](http://i.imgur.com/AvFaCSr.png)
 2. [Achieve 99% by GMM](http://nbviewer.jupyter.org/gist/luanjunyi/6632d4c0f92bc30750f4)
 3. [Sklearn: Gaussian Mixture Model](http://scikit-learn.org/stable/modules/mixture.html)
