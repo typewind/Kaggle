@@ -4,8 +4,8 @@ from sklearn.decomposition.pca import PCA
 from sklearn.svm import SVC
 from  sklearn.mixture import GaussianMixture
 import csv
-from keras.models import Sequential
-from keras.layers import Dense, Dropout
+#from keras.models import Sequential
+#from keras.layers import Dense, Dropout
 
 path="/Users/typewind/kaggle/Data_Science_London_Scikit_learn/"
 X_train=pd.read_csv(path+"train.csv",header=None).as_matrix()
@@ -42,7 +42,7 @@ def Simple_SVM():
 
     #print(pred_list(pred))
 
-def GMM_SVC():
+def GMM_SVC(X_test, X_train):
     pca = PCA(whiten=True)
     X_all = pca.fit_transform(np.r_[X_train, X_test])
     X_all = X_all[:,:12]
@@ -79,7 +79,7 @@ def dummyNet():
 
 
 # print the result of GMM_SVC
-write_csv(pred_list(GMM_SVC()))
+write_csv(pred_list(GMM_SVC(X_test, X_train)))
 
 # print the result of simple SVC
 #write_csv(pred_list(Simple_SVM()))
