@@ -6,4 +6,4 @@ Keep practicing.
 | Competitions                       | Score  | Rank   |
 |------------------------------------|---------|--------|
 | [Data Science London + Scikit-learn](https://www.kaggle.com/c/data-science-london-scikit-learn) | 0.99218 | N/A (5/191) |
-| Titanic                            |         |        |
+| [Titanic](https://www.kaggle.com/c/titanic)                            |         |        |
