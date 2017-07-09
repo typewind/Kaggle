@@ -1,6 +1,8 @@
 import numpy as np
 import pandas as pd
 from sklearn.decomposition.pca import PCA
+from sklearn.model_selection import GridSearchCV
+from sklearn.ensemble import RandomForestClassifier
 from sklearn.svm import SVC
 from  sklearn.mixture import GaussianMixture
 import csv
@@ -11,11 +13,14 @@ path="/Users/typewind/kaggle/Data_Science_London_Scikit_learn/"
 X_train=pd.read_csv(path+"train.csv",header=None).as_matrix()
 Y_train=pd.read_csv(path+"trainLabels.csv",header=None)[0].as_matrix()
 X_test=pd.read_csv(path+"test.csv", header=None).as_matrix()
+X_all=np.r_[X_train, X_test]
+Y_train=Y_train.ravel()
 
-pca12=PCA(n_components=40,whiten=True)
-pca12.fit(np.r_[X_train,X_test])
-X_train=pca12.transform(X_train)
-X_test=pca12.transform(X_test)
+
+#pca12=PCA(n_components=40,whiten=True)
+#pca12.fit(np.r_[X_train,X_test])
+#X_train=pca12.transform(X_train)
+#X_test=pca12.transform(X_test)
 
 
 def write_csv(prediction):
@@ -42,21 +47,35 @@ def Simple_SVM():
 
     #print(pred_list(pred))
 
-def GMM_SVC(X_test, X_train):
-    pca = PCA(whiten=True)
-    X_all = pca.fit_transform(np.r_[X_train, X_test])
-    X_all = X_all[:,:12]
-    #X_test = X_test[:,12]
-    #X_test=pca.transform(X_test)
-    X_test=X_test[:,:12]
-    X_train=X_train[:,:12]
-    gmm_new=GaussianMixture(n_components=4, covariance_type='full')
-    gmm_new.fit(X_all)
-    X_test_gmm=gmm_new.predict_proba(X_test)
-    X_train_gmm=gmm_new.predict_proba(X_train)
-    svm=SVC()
-    svm.fit(X_train_gmm,Y_train)
-    pred=svm.predict(X_test_gmm)
+def GMM_RF(X_test, X_train):
+    lowest_bic = np.infty
+    bic = []
+
+    # find the original GMM parmeter
+    n_components_range = range(1, 7)
+    cv_types = ['spherical', 'tied', 'diag', 'full']
+    for cv_type in cv_types:
+        for n_components in n_components_range:
+            gmm = GaussianMixture(n_components=n_components, covariance_type=cv_type)
+            gmm.fit(X_all)
+        bic.append(gmm.aic(X_all))
+        if bic[-1] < lowest_bic:
+            lowest_bic = bic[-1]
+            best_gmm = gmm
+    #print(best_gmm)
+
+    best_gmm.fit(X_all)
+    X_train = best_gmm.predict_proba(X_train)
+    X_test = best_gmm.predict_proba(X_test)
+
+    rf = RandomForestClassifier()
+    # find the best parameter of random forest
+    grid_search_rf = GridSearchCV(rf, param_grid=dict(), verbose=3, scoring='accuracy', cv=10).fit(X_train, Y_train)
+    rf_best = grid_search_rf.best_estimator_
+
+    rf_best.fit(X_train, Y_train)
+
+    pred = rf_best.predict(X_test)
     return pred
 
 
@@ -79,11 +98,10 @@ def dummyNet():
 
 
 # print the result of GMM_SVC
-write_csv(pred_list(GMM_SVC(X_test, X_train)))
+write_csv(pred_list(GMM_RF(X_test, X_train)))
 
 # print the result of simple SVC
 #write_csv(pred_list(Simple_SVM()))
 
 # print the result of dummy DNN
 #write_csv(pred_list((dummyNet())))
-
