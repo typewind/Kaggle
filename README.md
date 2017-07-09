@@ -5,5 +5,5 @@ Keep practicing.
 # Leaderboard
 | Competitions                       | Score  | Rank   |
 |------------------------------------|---------|--------|
-| Data Science London + Scikit-learn |  |  |
+| Data Science London + Scikit-learn | 0.93443 |  |
 | Titanic                            |         |        |
