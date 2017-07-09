@@ -9,7 +9,7 @@
 4. Run the code
 
 # Score:
-- GMM+SVC: 
+- GMM+Random Forest: 0.99218 
 - Simple SVC: 0.93443 (n_components=12)
 - DNN:0.85544
 
